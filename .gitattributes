@@ -1,0 +1,22 @@
+* text=auto eol=lf
+
+# Swift sources
+*.swift text diff=swift
+
+# Xcode project and config files
+*.pbxproj text eol=lf
+*.xcscheme text eol=lf
+*.xcconfig text eol=lf
+*.plist text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+
+# Binary artifacts
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.xcuserstate binary
+*.xcworkspace/xcuserdata/** binary

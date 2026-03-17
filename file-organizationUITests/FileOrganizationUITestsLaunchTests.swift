@@ -1,5 +1,5 @@
 //
-//  file_organizationUITestsLaunchTests.swift
+//  FileOrganizationUITestsLaunchTests.swift
 //  file-organizationUITests
 //
 //  Created by SownFrenky on 3/16/26.
@@ -7,9 +7,9 @@
 
 import XCTest
 
-final class file_organizationUITestsLaunchTests: XCTestCase {
+final class FileOrganizationUITestsLaunchTests: XCTestCase {
 
-    override class var runsForEachTargetApplicationUIConfiguration: Bool {
+    override static var runsForEachTargetApplicationUIConfiguration: Bool {
         true
     }
 

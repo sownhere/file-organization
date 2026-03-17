@@ -1,0 +1,145 @@
+name: CI
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Select Xcode (latest stable)
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "latest-stable"
+
+      - name: Xcode version
+        run: xcodebuild -version
+
+      - name: Validate PR commit messages
+        if: github.event_name == 'pull_request'
+        run: |
+          git log --format='%s' ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | while read -r msg; do
+            echo "$msg" | grep -qE "^Merge " && continue
+            if ! echo "$msg" | grep -qE "^(feat|fix|docs|style|refactor|perf|test|chore|ci|revert)(\(.+\))?!?: .{1,72}$"; then
+              echo "Invalid commit message: $msg"
+              exit 1
+            fi
+          done
+          echo "All commit messages are valid"
+
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: Run SwiftLint
+        run: swiftlint lint --strict
+
+  build:
+    name: Build
+    runs-on: macos-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode (latest stable)
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "latest-stable"
+
+      - name: Xcode version
+        run: xcodebuild -version
+
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: Prepare env xcconfig files
+        run: |
+          mkdir -p envs
+          if [ ! -f "envs/dev.xcconfig" ]; then
+            cp "envs-example/dev.xcconfig.example" "envs/dev.xcconfig"
+          fi
+          if [ ! -f "envs/staging.xcconfig" ]; then
+            cp "envs-example/staging.xcconfig.example" "envs/staging.xcconfig"
+          fi
+          if [ ! -f "envs/production.xcconfig" ]; then
+            cp "envs-example/production.xcconfig.example" "envs/production.xcconfig"
+          fi
+
+      - name: Resolve packages
+        run: |
+          xcodebuild \
+            -project "file-organization.xcodeproj" \
+            -scheme "file-organization Dev" \
+            -resolvePackageDependencies
+
+      - name: Build project
+        run: |
+          xcodebuild \
+            -project "file-organization.xcodeproj" \
+            -scheme "file-organization Dev" \
+            -configuration "Dev Debug" \
+            -destination "platform=iOS Simulator,name=iPhone 16,OS=latest" \
+            -skipMacroValidation \
+            -skipPackagePluginValidation \
+            clean build
+
+  test:
+    name: Test
+    runs-on: macos-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode (latest stable)
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "latest-stable"
+
+      - name: Xcode version
+        run: xcodebuild -version
+
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: Prepare env xcconfig files
+        run: |
+          mkdir -p envs
+          if [ ! -f "envs/dev.xcconfig" ]; then
+            cp "envs-example/dev.xcconfig.example" "envs/dev.xcconfig"
+          fi
+          if [ ! -f "envs/staging.xcconfig" ]; then
+            cp "envs-example/staging.xcconfig.example" "envs/staging.xcconfig"
+          fi
+          if [ ! -f "envs/production.xcconfig" ]; then
+            cp "envs-example/production.xcconfig.example" "envs/production.xcconfig"
+          fi
+
+      - name: Resolve packages
+        run: |
+          xcodebuild \
+            -project "file-organization.xcodeproj" \
+            -scheme "file-organization Dev" \
+            -resolvePackageDependencies
+
+      - name: Run tests
+        run: |
+          xcodebuild \
+            -project "file-organization.xcodeproj" \
+            -scheme "file-organization Dev" \
+            -testPlan "FileOrganization-CI" \
+            -configuration "Dev Debug" \
+            -destination "platform=iOS Simulator,name=iPhone 16,OS=latest" \
+            -skipMacroValidation \
+            -skipPackagePluginValidation \
+            clean test

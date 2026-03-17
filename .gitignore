@@ -1,6 +1,10 @@
+## Various settings
 build/
 DerivedData/
 **/DerivedData/
+*.pbxuser
+!default.pbxuser
+xcuserdata/
 
 # Ignore local environment configs
 envs/
