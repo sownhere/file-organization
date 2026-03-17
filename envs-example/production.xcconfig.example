@@ -1,0 +1,12 @@
+// Production environment (example)
+// Copy to `envs/production.xcconfig` and edit locally.
+API_DOMAIN_URL = https://api.file-organization.local
+API_VERSION = /api/v1
+
+APP_DISPLAY_NAME = File Organization
+APP_BUNDLE_ID = com.santaris.file-organization
+APP_VERSION = 1.0.0
+APP_BUILD_NUMBER = 1
+
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) PROD
+

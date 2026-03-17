@@ -1,0 +1,9 @@
+build/
+DerivedData/
+**/DerivedData/
+
+# Ignore local environment configs
+envs/
+
+# Keep examples committed
+!envs-example/
