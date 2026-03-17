@@ -1,0 +1,103 @@
+opt_in_rules:
+    - attributes
+    - closure_spacing
+    - contains_over_filter_count
+    - contains_over_filter_is_empty
+    - contains_over_first_not_nil
+    - contains_over_range_nil_comparison
+    - empty_count
+    - empty_string
+    - explicit_init
+    - fatal_error_message
+    - first_where
+    - implicitly_unwrapped_optional
+    - joined_default_parameter
+    - literal_expression_end_indentation
+    - multiline_arguments
+    - multiline_parameters
+    - nimble_operator
+    - operator_usage_whitespace
+    - overridden_super_call
+    - pattern_matching_keywords
+    - private_subject
+    - prohibited_interface_builder
+    - prohibited_super_call
+    - redundant_nil_coalescing
+    - single_test_class
+    - sorted_first_last
+    - unneeded_parentheses_in_closure_argument
+    - untyped_error_in_catch
+    - vertical_parameter_alignment_on_call
+    - yoda_condition
+    - discouraged_optional_boolean
+    - force_unwrapping
+    - large_tuple
+    - prefixed_toplevel_constant
+    - override_in_extension
+
+custom_rules:
+    DynamicProperty_private:
+        name: "Private SwiftUI DynamicProperty"
+        regex: "@(AccessibilityFocusState|AppStorage|EnvironmentObject|FocusState|FocusedObject|FocusedObject|GestureState|Namespace|ScaledMetric|SceneStorage|State|StateObject)\\s*?\\n?(\\s|\\t)*?(var|public|internal|open)"
+        message: "SwiftUI DynamicProperty variables should always be marked private."
+        severity: warning
+    DynamicProperty_private_argument:
+        name: "Private SwiftUI DynamicProperty"
+        regex: "@(Environment|FetchRequest|FocusedValue|GestureState|NSApplicationDelegateAdaptor|ScaledMetric|SectionedFetchRequest)\\(.*\\)\\s*?\\n?(\\s|\\t)*?(var|public|internal|open)"
+        message: "SwiftUI DynamicProperty(with argument) variables should always be marked private."
+        severity: warning
+
+excluded:
+    - .bundle
+
+file_length:
+    warning: 500
+    error: 1000
+    ignore_comment_only_lines: true
+line_length:
+    warning: 120
+    ignores_function_declarations: true
+    ignores_comments: true
+    ignores_interpolated_strings: true
+    ignores_urls: true
+function_parameter_count:
+    warning: 10
+    error: 15
+function_body_length:
+    warning: 350
+    error: 500
+type_body_length:
+    warning: 400
+    error: 500
+cyclomatic_complexity:
+    warning: 20
+    error: 30
+    ignores_case_statements: true
+identifier_name:
+    excluded:
+        - id
+        - ad
+        - dx
+        - dy
+        - x
+        - y
+trailing_whitespace:
+    ignores_empty_lines: true
+    ignores_comments: true
+large_tuple:
+    - 4
+    - 5
+nesting:
+    type_level:
+        warning: 3
+        error: 6
+    function_level:
+        warning: 5
+        error: 10
+    statement_level:
+        warning: 5
+        error: 10
+
+disabled_rules:
+    - multiple_closures_with_trailing_closure
+    - discouraged_optional_boolean
