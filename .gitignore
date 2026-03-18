@@ -11,3 +11,7 @@ envs/
 
 # Keep examples committed
 !envs-example/
+
+# Swift Package Manager
+Packages/*/.build/
+.swiftpm/
