@@ -26,15 +26,6 @@ final class AppDelegateAdaptor: UIResponder, UIApplicationDelegate {
     }
 
     func application(
-        _ app: UIApplication,
-        open url: URL,
-        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-    ) -> Bool {
-        store.send(.appDelegate(.openURL(url)))
-        return true
-    }
-
-    func application(
         _ application: UIApplication,
         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
     ) {
