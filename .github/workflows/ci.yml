@@ -45,6 +45,25 @@ jobs:
       - name: Run SwiftLint
         run: swiftlint lint --strict
 
+  package-test:
+    name: Package Tests
+    runs-on: macos-latest
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [Core, SharedUI, FileServices]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode (latest stable)
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "latest-stable"
+
+      - name: Test ${{ matrix.package }}
+        run: swift test --package-path Packages/${{ matrix.package }}
+
   build:
     name: Build
     runs-on: macos-latest
