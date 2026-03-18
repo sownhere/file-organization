@@ -64,6 +64,19 @@ jobs:
       - name: Test ${{ matrix.package }}
         run: swift test --package-path Packages/${{ matrix.package }}
 
+  package-test-result:
+    name: Package Tests Result
+    runs-on: ubuntu-latest
+    needs: package-test
+    if: always()
+    steps:
+      - name: Check package test results
+        run: |
+          if [ "${{ needs.package-test.result }}" != "success" ]; then
+            echo "Package tests failed"
+            exit 1
+          fi
+
   build:
     name: Build
     runs-on: macos-latest

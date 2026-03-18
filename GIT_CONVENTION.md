@@ -217,13 +217,14 @@ Migration guide: docs/migration/v2-auth.md
 4. CI runs automatically
 5. Review (self-review if solo, peer review if team)
 6. Address feedback, update branch
-7. Squash merge into target
-8. Delete branch
+7. Squash commits on branch into one clean commit
+8. Merge into target (merge commit --no-ff)
+9. Delete branch
 ```
 
 ### PR Title
 
-Must follow commit convention (this becomes the squash merge commit):
+Must follow commit convention (this becomes the squashed commit on branch):
 
 ```
 feat(chat): implement real-time SSE streaming (#42)
@@ -404,13 +405,30 @@ Each package in the `Packages/` directory is an independent Swift Package.
 
 | Merge Target             | Strategy           | Rationale                              |
 |--------------------------|--------------------|----------------------------------------|
-| feature/fix → `develop`  | **Squash merge**   | One clean commit per feature/fix       |
+| feature/fix → `develop`  | **Squash on branch + merge commit** | Clean commit + visible branch link |
 | release → `main`         | **Merge commit**   | Preserve release branch context        |
 | release → `develop`      | **Merge commit**   | Back-merge release stabilization       |
 | hotfix → `main`          | **Merge commit**   | Traceability for production fix        |
 | hotfix → `develop`       | **Cherry-pick**    | Avoid pulling unrelated main commits   |
 
-### Squash Merge Commit Format
+### Squash on Branch Before Merge
+
+Before merging, squash all commits on the feature branch into one:
+
+```bash
+# On feature branch, squash all commits since diverging from develop
+git rebase -i develop
+# Mark all commits except the first as "squash"
+# Write final commit message following convention
+```
+
+Then on GitHub, use **"Create a merge commit"** (not "Squash and merge").
+
+This gives you:
+- One clean commit per feature (like squash merge)
+- Visible branch connection on the graph (like merge commit)
+
+### Squash Commit Format
 
 The squash commit message = PR title + summary of changes:
 
@@ -901,7 +919,7 @@ Save as `.github/CODEOWNERS`:
 Branch model:    Git Flow (main + develop + feature branches)
 Versioning:      SemVer, tag every store submission
 Changelog:       CHANGELOG.md, auto-generate when possible
-PR requirement:  Self-review via PR, squash merge
+PR requirement:  Self-review via PR, squash on branch + merge commit
 CI:              Lint + Test + Build on PR, Deploy on tag
 Protection:      main + develop protected, no direct push
 ```
@@ -999,7 +1017,7 @@ Repository Setup
 │    v1.2.0 (annotated, on main only, after release merge)      │
 │                                                               │
 │  MERGE                                                        │
-│    feature/fix → develop    : squash merge                    │
+│    feature/fix → develop    : squash on branch + merge commit │
 │    release     → main       : merge commit (--no-ff)          │
 │    hotfix      → main       : merge commit (--no-ff)          │
 │    hotfix      → develop    : cherry-pick                     │
