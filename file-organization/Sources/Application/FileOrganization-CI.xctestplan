@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "B7A9A6D3-7AB5-4B4C-A0E5-0E47E2F9C4A8",
+      "name" : "Default",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:file-organization.xcodeproj",
+        "identifier" : "FA5D78DF2F68510A00191440",
+        "name" : "file-organizationTests"
+      }
+    }
+  ],
+  "version" : 1
+}
