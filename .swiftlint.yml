@@ -50,6 +50,7 @@ custom_rules:
 excluded:
     - .bundle
     - build
+    - "**/.build"
 
 file_length:
     warning: 500

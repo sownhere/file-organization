@@ -12,6 +12,9 @@ struct FileOrganizationApp: App {
     var body: some Scene {
         WindowGroup {
             RootView(store: appDelegateAdaptor.store)
+                .onOpenURL { url in
+                    appDelegateAdaptor.store.send(.appDelegate(.openURL(url)))
+                }
         }
         .onChange(of: scenePhase) { _, newPhase in
             switch newPhase {
