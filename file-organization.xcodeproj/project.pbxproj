@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		074EBEFE2F6A45B700F5C9D6 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 074EBEFD2F6A45B700F5C9D6 /* Core */; };
+		074EDE1A2F6A4B7500F5C9D6 /* FileServices in Frameworks */ = {isa = PBXBuildFile; productRef = 074EDE192F6A4B7500F5C9D6 /* FileServices */; };
 		FA5D79022F68518E00191440 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = FA5D79012F68518E00191440 /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
@@ -34,16 +36,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		0EEAE736AEB528DE16CEAA28 /* Exceptions for "envs" folder in "file-organization" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				dev.xcconfig,
-				production.xcconfig,
-				staging.xcconfig,
-			);
-			target = FA5D78D22F68510800191440 /* file-organization */;
-		};
-		FA3762F72F6855FE00BB3118 /* Exceptions for "file-organization" folder in "file-organization" target */ = {
+		074EBF4D2F6A485700F5C9D6 /* Exceptions for "file-organization" folder in "file-organization" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Resources/Plist/Info.plist,
@@ -53,18 +46,25 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		074EBEF02F6A3F2B00F5C9D6 /* test-plan */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "test-plan";
+			sourceTree = "<group>";
+		};
+		074EBF312F6A471100F5C9D6 /* Packages */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Packages;
+			sourceTree = "<group>";
+		};
 		645C9C4B87EE3A8223DB857F /* envs */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				0EEAE736AEB528DE16CEAA28 /* Exceptions for "envs" folder in "file-organization" target */,
-			);
 			path = envs;
 			sourceTree = "<group>";
 		};
 		FA5D78D52F68510800191440 /* file-organization */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				FA3762F72F6855FE00BB3118 /* Exceptions for "file-organization" folder in "file-organization" target */,
+				074EBF4D2F6A485700F5C9D6 /* Exceptions for "file-organization" folder in "file-organization" target */,
 			);
 			path = "file-organization";
 			sourceTree = "<group>";
@@ -87,6 +87,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA5D79022F68518E00191440 /* ComposableArchitecture in Frameworks */,
+				074EDE1A2F6A4B7500F5C9D6 /* FileServices in Frameworks */,
+				074EBEFE2F6A45B700F5C9D6 /* Core in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +116,8 @@
 				FA5D78E32F68510A00191440 /* file-organizationTests */,
 				FA5D78ED2F68510A00191440 /* file-organizationUITests */,
 				645C9C4B87EE3A8223DB857F /* envs */,
+				074EBEF02F6A3F2B00F5C9D6 /* test-plan */,
+				074EBF312F6A471100F5C9D6 /* Packages */,
 				FAAD580A2F69DBB800E2C888 /* Frameworks */,
 				FA5D78D42F68510800191440 /* Products */,
 			);
@@ -153,12 +157,15 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				074EBEF02F6A3F2B00F5C9D6 /* test-plan */,
 				645C9C4B87EE3A8223DB857F /* envs */,
 				FA5D78D52F68510800191440 /* file-organization */,
 			);
 			name = "file-organization";
 			packageProductDependencies = (
 				FA5D79012F68518E00191440 /* ComposableArchitecture */,
+				074EBEFD2F6A45B700F5C9D6 /* Core */,
+				074EDE192F6A4B7500F5C9D6 /* FileServices */,
 			);
 			productName = "file-organization";
 			productReference = FA5D78D32F68510800191440 /* file-organization.app */;
@@ -242,6 +249,9 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				FA5D79002F68518E00191440 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				074EBEFC2F6A45B700F5C9D6 /* XCLocalSwiftPackageReference "Packages/Core" */,
+				074EBEFF2F6A45CD00F5C9D6 /* XCLocalSwiftPackageReference "Packages/SharedUI" */,
+				074EDE182F6A4B7500F5C9D6 /* XCLocalSwiftPackageReference "Packages/FileServices" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA5D78D42F68510800191440 /* Products */;
@@ -422,11 +432,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "file-organization/Resources/Plist/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -459,7 +470,7 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 432P93KZ59;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID).tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -482,7 +493,7 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 432P93KZ59;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID).uitests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -511,11 +522,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "file-organization/Resources/Plist/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -547,7 +559,7 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 432P93KZ59;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID).uitests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -571,7 +583,7 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 432P93KZ59;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID).tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -663,7 +675,7 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 432P93KZ59;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID).tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -686,7 +698,7 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 432P93KZ59;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID).uitests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -771,7 +783,7 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 432P93KZ59;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID).tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -800,11 +812,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "file-organization/Resources/Plist/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -904,7 +917,7 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 432P93KZ59;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID).uitests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -927,7 +940,7 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 432P93KZ59;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID).uitests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -956,11 +969,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "file-organization/Resources/Plist/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -998,11 +1012,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "file-organization/Resources/Plist/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1040,11 +1055,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "file-organization/Resources/Plist/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1138,7 +1154,7 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 432P93KZ59;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID).tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1161,7 +1177,7 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 432P93KZ59;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID).uitests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1246,7 +1262,7 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 432P93KZ59;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID).tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1317,6 +1333,21 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		074EBEFC2F6A45B700F5C9D6 /* XCLocalSwiftPackageReference "Packages/Core" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Core;
+		};
+		074EBEFF2F6A45CD00F5C9D6 /* XCLocalSwiftPackageReference "Packages/SharedUI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/SharedUI;
+		};
+		074EDE182F6A4B7500F5C9D6 /* XCLocalSwiftPackageReference "Packages/FileServices" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/FileServices;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		FA5D79002F68518E00191440 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1329,6 +1360,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		074EBEFD2F6A45B700F5C9D6 /* Core */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Core;
+		};
+		074EDE192F6A4B7500F5C9D6 /* FileServices */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FileServices;
+		};
 		FA5D79012F68518E00191440 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA5D79002F68518E00191440 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
