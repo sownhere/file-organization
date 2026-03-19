@@ -23,7 +23,6 @@
 - [Git Hooks](#git-hooks)
 - [CI/CD Pipeline](#cicd-pipeline)
 - [CODEOWNERS](#codeowners)
-- [Modular Development](#modular-development)
 - [Project-Specific Profiles](#project-specific-profiles)
 - [Repo Setup Checklist](#repo-setup-checklist)
 - [Quick Reference](#quick-reference)
@@ -297,17 +296,6 @@ Closes #
 - [ ] Manual testing on device (specify: ___)
 - [ ] Edge cases considered and documented
 
-### Impacted Packages
-Select the packages that have been modified:
-- [ ] `Core`
-- [ ] `FileServices`
-- [ ] `SharedUI`
-- [ ] `App` (Main target)
-
-### Package Verification
-When modifying a package, please run its tests individually:
-- [ ] `swift test --package-path Packages/<Name>` passes for all affected packages.
-
 ## Screenshots / Recordings
 
 <!-- Required for UI changes. Delete section if not applicable. -->
@@ -336,33 +324,11 @@ When modifying a package, please run its tests individually:
 
 ---
 
-## Modular Development
+## Clean Architecture (TCA-based)
 
-The project is structured as a modular app using Swift Packages. This allows for faster build times and better separation of concerns.
+The app is built with TCA for state/effects, and organized by responsibility boundaries (Domain/Features → Data/Services → Presentation).
 
-### Working with Packages
-
-Each package in the `Packages/` directory is an independent Swift Package.
-
-- **Opening a Package**: To work on a specific module (e.g., `Core`), you can open its `Package.swift` file directly in Xcode or VS Code. This provides a focused environment for coding and testing without the overhead of the entire app.
-- **Building & Testing via CLI**:
-  You can build and test packages individually from the terminal:
-  ```bash
-  # Test the Core package
-  swift test --package-path Packages/Core
-
-  # Build the SharedUI package
-  swift build --package-path Packages/SharedUI
-  ```
-
-### Dependency Rules
-
-- **SharedUI** depends on **Core**.
-- **FileServices** depends on **Core**.
-- **App** (Main target) depends on all packages.
-
-> [!IMPORTANT]
-> When modifying a "leaf" package like `Core`, you **must** ensure that its consumers (`SharedUI`, `FileServices`, or the `App`) are not broken. Run the app's full test suite or trigger CI to be sure.
+In CI we validate behavior at the app level (full test plan). Per-package CLI test commands are not part of the standard workflow.
 
 ---
 

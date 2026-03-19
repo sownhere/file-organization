@@ -51,6 +51,9 @@ excluded:
     - .bundle
     - build
     - "**/.build"
+    - "@build"
+    - "**/@build"
+    - swift-rules
 
 file_length:
     warning: 500

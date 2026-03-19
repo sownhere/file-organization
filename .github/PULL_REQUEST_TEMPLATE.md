@@ -35,17 +35,6 @@ Closes #
 - [ ] Manual testing on device (specify: ___)
 - [ ] Edge cases considered and documented
 
-### Impacted Packages
-Select the packages that have been modified:
-- [ ] `Core`
-- [ ] `FileServices`
-- [ ] `SharedUI`
-- [ ] `App` (Main target)
-
-### Package Verification
-When modifying a package, please run its tests individually:
-- [ ] `swift test --package-path Packages/<Name>` passes for all affected packages.
-
 ## Screenshots / Recordings
 
 <!-- Required for UI changes. Delete section if not applicable. -->

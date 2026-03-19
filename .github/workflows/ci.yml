@@ -45,38 +45,6 @@ jobs:
       - name: Run SwiftLint
         run: swiftlint lint --strict
 
-  package-test:
-    name: Package Tests
-    runs-on: macos-latest
-    needs: lint
-    strategy:
-      fail-fast: false
-      matrix:
-        package: [Core, SharedUI, FileServices]
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Select Xcode (latest stable)
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: "latest-stable"
-
-      - name: Test ${{ matrix.package }}
-        run: swift test --package-path Packages/${{ matrix.package }}
-
-  package-test-result:
-    name: Package Tests Result
-    runs-on: ubuntu-latest
-    needs: package-test
-    if: always()
-    steps:
-      - name: Check package test results
-        run: |
-          if [ "${{ needs.package-test.result }}" != "success" ]; then
-            echo "Package tests failed"
-            exit 1
-          fi
-
   build:
     name: Build
     runs-on: macos-latest
@@ -94,18 +62,28 @@ jobs:
 
       - name: Install SwiftLint
         run: brew install swiftlint
+        
+      - name: Cache Swift Package Manager
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            ~/Library/Developer/Xcode/DerivedData/**/SourcePackages
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
 
       - name: Prepare env xcconfig files
         run: |
-          mkdir -p envs
-          if [ ! -f "envs/dev.xcconfig" ]; then
-            cp "envs-example/dev.xcconfig.example" "envs/dev.xcconfig"
+          mkdir -p "envs/file-organization"
+          if [ ! -f "envs/file-organization/dev.xcconfig" ]; then
+            cp "envs-example/dev.xcconfig.example" "envs/file-organization/dev.xcconfig"
           fi
-          if [ ! -f "envs/staging.xcconfig" ]; then
-            cp "envs-example/staging.xcconfig.example" "envs/staging.xcconfig"
+          if [ ! -f "envs/file-organization/staging.xcconfig" ]; then
+            cp "envs-example/staging.xcconfig.example" "envs/file-organization/staging.xcconfig"
           fi
-          if [ ! -f "envs/production.xcconfig" ]; then
-            cp "envs-example/production.xcconfig.example" "envs/production.xcconfig"
+          if [ ! -f "envs/file-organization/production.xcconfig" ]; then
+            cp "envs-example/production.xcconfig.example" "envs/file-organization/production.xcconfig"
           fi
 
       - name: Resolve packages
@@ -124,7 +102,7 @@ jobs:
             -destination "platform=iOS Simulator,name=iPhone 16,OS=latest" \
             -skipMacroValidation \
             -skipPackagePluginValidation \
-            clean build
+            build
 
   test:
     name: Test
@@ -144,17 +122,27 @@ jobs:
       - name: Install SwiftLint
         run: brew install swiftlint
 
+      - name: Cache Swift Package Manager
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            ~/Library/Developer/Xcode/DerivedData/**/SourcePackages
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
       - name: Prepare env xcconfig files
         run: |
-          mkdir -p envs
-          if [ ! -f "envs/dev.xcconfig" ]; then
-            cp "envs-example/dev.xcconfig.example" "envs/dev.xcconfig"
+          mkdir -p "envs/file-organization"
+          if [ ! -f "envs/file-organization/dev.xcconfig" ]; then
+            cp "envs-example/dev.xcconfig.example" "envs/file-organization/dev.xcconfig"
           fi
-          if [ ! -f "envs/staging.xcconfig" ]; then
-            cp "envs-example/staging.xcconfig.example" "envs/staging.xcconfig"
+          if [ ! -f "envs/file-organization/staging.xcconfig" ]; then
+            cp "envs-example/staging.xcconfig.example" "envs/file-organization/staging.xcconfig"
           fi
-          if [ ! -f "envs/production.xcconfig" ]; then
-            cp "envs-example/production.xcconfig.example" "envs/production.xcconfig"
+          if [ ! -f "envs/file-organization/production.xcconfig" ]; then
+            cp "envs-example/production.xcconfig.example" "envs/file-organization/production.xcconfig"
           fi
 
       - name: Resolve packages
@@ -174,4 +162,4 @@ jobs:
             -destination "platform=iOS Simulator,name=iPhone 16,OS=latest" \
             -skipMacroValidation \
             -skipPackagePluginValidation \
-            clean test
+            test

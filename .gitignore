@@ -15,3 +15,18 @@ envs/
 # Swift Package Manager
 Packages/*/.build/
 .swiftpm/
+swift-rules
+
+#Package for cursor indexing
+Package.swift
+Package.resolved
+.build/
+@build/
+
+// Vibe coding
+.agent/
+.agents/
+.claude/
+.cursor/
+.gemini/
+_bmad/

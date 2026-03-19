@@ -1,3 +1,11 @@
+//
+//  AppConfig.swift
+//  file-organization
+//
+//  Created by sown on 4/16/26.
+//  Copyright © 2026 Santaris Technologies. All rights reserved.
+//
+
 import Foundation
 
 enum AppConfig {
@@ -7,7 +15,7 @@ enum AppConfig {
         static let version = value(for: "APP_VERSION")
         static let buildNumber = value(for: "APP_BUILD_NUMBER")
     }
-
+    
     enum API {
         static let domainURL = value(for: "API_DOMAIN_URL")
         static let version = value(for: "API_VERSION")
