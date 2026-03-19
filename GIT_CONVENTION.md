@@ -41,9 +41,9 @@ release/1.0.0 ──────●               ╱
                     ╱               ╱
 develop ───●───●───●───●───●───●───●──────────────── (integration)
           ╱   ╱       ╱   ╱       ╱
-feature/a ●  ╱       ╱   ╱       ╱
+feat/a ●  ╱       ╱   ╱       ╱
             ╱       ╱   ╱       ╱
-feature/b  ●       ╱   ╱       ╱
+feat/b  ●       ╱   ╱       ╱
                   ╱   ╱       ╱
 fix/bug-x        ●   ╱       ╱
                     ╱       ╱
@@ -56,7 +56,7 @@ hotfix/1.0.1 ─────●───────● (from main, merges back 
 |----------------|-------------|--------------|----------------------|---------------------|
 | `main`         | Permanent   | —            | —                    | Release manager     |
 | `develop`      | Permanent   | `main`       | `release/*`          | Any via approved PR |
-| `feature/*`    | Temporary   | `develop`    | `develop`            | Author via PR       |
+| `feat/*`    | Temporary   | `develop`    | `develop`            | Author via PR       |
 | `fix/*`        | Temporary   | `develop`    | `develop`            | Author via PR       |
 | `refactor/*`   | Temporary   | `develop`    | `develop`            | Author via PR       |
 | `release/*`    | Temporary   | `develop`    | `main` + `develop`   | Release manager     |
@@ -91,7 +91,7 @@ When there is no ticket system, omit the ticket ID:
 
 | Prefix        | Purpose                                       | Example                            |
 |---------------|-----------------------------------------------|------------------------------------|
-| `feature/`    | New user-facing functionality                 | `feature/42-sse-streaming`         |
+| `feat/`    | New user-facing functionality                 | `feat/42-sse-streaming`         |
 | `fix/`        | Bug fix                                       | `fix/87-jwt-refresh-race`          |
 | `refactor/`   | Code restructuring (no behavior change)       | `refactor/extract-auth-module`     |
 | `chore/`      | Maintenance, deps, config                     | `chore/update-ktor-2.4`           |
@@ -246,9 +246,9 @@ When a feature is too big for one PR, use stacked branches:
 
 ```
 develop
- └── feature/42-auth-base        ← PR #1: models, interfaces
-      └── feature/42-auth-ui     ← PR #2: UI layer (depends on #1)
-           └── feature/42-auth-tests  ← PR #3: tests (depends on #2)
+ └── feat/42-auth-base        ← PR #1: models, interfaces
+      └── feat/42-auth-ui     ← PR #2: UI layer (depends on #1)
+           └── feat/42-auth-tests  ← PR #3: tests (depends on #2)
 ```
 
 Merge in order: #1 → #2 → #3.
@@ -405,7 +405,7 @@ Each package in the `Packages/` directory is an independent Swift Package.
 
 | Merge Target             | Strategy           | Rationale                              |
 |--------------------------|--------------------|----------------------------------------|
-| feature/fix → `develop`  | **Squash on branch + merge commit** | Clean commit + visible branch link |
+| feat/fix → `develop`  | **Squash on branch + merge commit** | Clean commit + visible branch link |
 | release → `main`         | **Merge commit**   | Preserve release branch context        |
 | release → `develop`      | **Merge commit**   | Back-merge release stabilization       |
 | hotfix → `main`          | **Merge commit**   | Traceability for production fix        |
@@ -1003,7 +1003,7 @@ Repository Setup
 ├──────────────────────────────────────────────────────────────┤
 │                                                               │
 │  BRANCH                                                       │
-│    feature/42-short-description                               │
+│    feat/42-short-description                               │
 │    fix/87-what-is-broken                                      │
 │    release/1.2.0                                              │
 │    hotfix/1.2.1                                               │
@@ -1017,7 +1017,7 @@ Repository Setup
 │    v1.2.0 (annotated, on main only, after release merge)      │
 │                                                               │
 │  MERGE                                                        │
-│    feature/fix → develop    : squash on branch + merge commit │
+│    feat/fix → develop    : squash on branch + merge commit │
 │    release     → main       : merge commit (--no-ff)          │
 │    hotfix      → main       : merge commit (--no-ff)          │
 │    hotfix      → develop    : cherry-pick                     │
