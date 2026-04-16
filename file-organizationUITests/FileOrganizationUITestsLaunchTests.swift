@@ -3,6 +3,7 @@
 //  file-organizationUITests
 //
 //  Created by SownFrenky on 3/16/26.
+//  Copyright © 2026 Santaris Technologies. All rights reserved.
 //
 
 import XCTest
@@ -22,8 +23,8 @@ final class FileOrganizationUITestsLaunchTests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
-        // Insert steps here to perform after app launch but before taking a screenshot,
-        // such as logging into a test account or navigating somewhere in the app
+        XCTAssertTrue(app.tabBars.buttons["Recents"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Today"].waitForExistence(timeout: 5))
 
         let attachment = XCTAttachment(screenshot: app.screenshot())
         attachment.name = "Launch Screen"

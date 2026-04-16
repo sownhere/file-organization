@@ -1,10 +1,12 @@
 // Development environment (example)
-// Copy to `envs/dev.xcconfig` and edit locally.
+// Copy to `envs/file-organization/dev.xcconfig` and edit locally.
 API_DOMAIN_URL = https://dev.file-organization.local
 API_VERSION = /api/v1
 
 APP_DISPLAY_NAME = File Organization DEV
 APP_BUNDLE_ID = com.santaris.file-organization.dev
+APP_SHARE_EXTENSION_DISPLAY_NAME = File Organization
+APP_SHARE_EXTENSION_BUNDLE_ID = com.santaris.file-organization.dev.share-extension
 APP_VERSION = 1.0.0
 APP_BUILD_NUMBER = 1
 

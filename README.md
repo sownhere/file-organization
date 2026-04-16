@@ -7,10 +7,9 @@ A native iOS file management app built with **SwiftUI** and **The Composable Arc
 | Layer | Technology |
 |-------|-----------|
 | **UI** | SwiftUI (iOS 18+) |
-| **Architecture** | TCA (The Composable Architecture) v1.25.1 |
+| **Architecture** | TCA (The Composable Architecture) v1.25.1 + Clean Architecture |
 | **Language** | Swift 6.0 |
 | **State Management** | Unidirectional data flow (Store → Reducer → Effect) |
-| **Modularization** | Swift Package Manager (local packages) |
 | **Code Quality** | SwiftLint (custom rules) |
 | **Automation** | fastlane |
 | **Platforms** | iOS 18, macOS 15 |
@@ -106,6 +105,25 @@ xcodebuild -scheme "file-organization Dev" \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
   build
 ```
+
+### Cursor SourceKit + SPM Index Setup
+
+When cloning the repo on a new machine, run this once so app, tests, and share extension are all indexed in the same `@build` data:
+
+```bash
+# Build app + tests + share extension into @build and refresh buildServer.json
+./scripts/index-all.sh
+```
+
+Optional: pass a custom simulator destination:
+
+```bash
+./scripts/index-all.sh "platform=iOS Simulator,name=iPhone 17"
+```
+
+If test sources currently fail to compile, the script continues after printing a warning so app and extension index data still get refreshed.
+
+If Cursor still shows stale module errors after script completion, run `Developer: Reload Window`.
 
 ### Code Generation
 

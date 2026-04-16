@@ -1,3 +1,11 @@
+//
+//  AppTheme.swift
+//  file-organization
+//
+//  Created by sown on 4/16/26.
+//  Copyright © 2026 Santaris Technologies. All rights reserved.
+//
+
 import SwiftUI
 import UIKit
 
@@ -11,7 +19,7 @@ enum AppTheme {
         static let primaryText = Color(red: 0.08, green: 0.13, blue: 0.21)
         static let secondaryText = Color(red: 0.31, green: 0.39, blue: 0.49)
     }
-
+    
     enum UIKitColors {
         static let navigationBackground = UIColor.systemBackground
         static let tabBarBackground = UIColor.systemBackground

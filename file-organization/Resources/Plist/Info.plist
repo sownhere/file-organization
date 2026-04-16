@@ -14,5 +14,9 @@
 	<string>$(APP_DISPLAY_NAME)</string>
 	<key>APP_VERSION</key>
 	<string>$(APP_VERSION)</string>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 </dict>
 </plist>
