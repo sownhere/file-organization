@@ -12,6 +12,7 @@ enum AppConfig {
     enum App {
         static let displayName = value(for: "APP_DISPLAY_NAME")
         static let bundleID = value(for: "APP_BUNDLE_ID")
+        static let appGroupID = value(for: "APP_GROUP_ID")
         static let version = value(for: "APP_VERSION")
         static let buildNumber = value(for: "APP_BUILD_NUMBER")
     }

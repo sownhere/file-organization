@@ -25,6 +25,11 @@ struct MainTab {
         case myFiles(MyFiles.Action)
         case selectedTabChanged(MainTabItem)
         case reloadAll
+        case delegate(Delegate)
+    }
+    
+    enum Delegate: Equatable {
+        case openPDF(FileItem)
     }
     
     // MARK: - Body
@@ -47,7 +52,13 @@ struct MainTab {
                     .send(.myFiles(.reload))
                 )
                 
-            case .recents, .myFiles:
+            case let .recents(.delegate(.openPDF(file))):
+                return .send(.delegate(.openPDF(file)))
+                
+            case let .myFiles(.delegate(.openPDF(file))):
+                return .send(.delegate(.openPDF(file)))
+                
+            case .recents, .myFiles, .delegate:
                 return .none
             }
         }

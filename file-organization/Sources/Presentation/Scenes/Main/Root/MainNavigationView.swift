@@ -10,18 +10,26 @@
 import SwiftUI
 
 struct MainNavigationView: View {
-    // MARK: - Store
     @Bindable var store: StoreOf<MainNavigation>
-    
-    // MARK: - Body
+
     var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             MainTabView(store: store.scope(state: \.mainTab, action: \.mainTab))
-        } destination: { store in
-            switch store.state {
-            default:
-                EmptyView()
-            }
+        } destination: { pathStore in
+            MainNavigationPathDestinationView(store: pathStore)
+        }
+    }
+}
+
+// MARK: - Stack destinations
+
+private struct MainNavigationPathDestinationView: View {
+    @Bindable var store: StoreOf<MainNavigation.Path>
+
+    var body: some View {
+        switch store.case {
+        case let .pdfViewer(pdfStore):
+            PDFViewerView(store: pdfStore)
         }
     }
 }

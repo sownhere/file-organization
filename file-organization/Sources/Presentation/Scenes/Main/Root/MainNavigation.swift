@@ -13,8 +13,7 @@ import Foundation
 struct MainNavigation {
     @Reducer
     enum Path {
-        // Future push destinations go here
-        // case fileDetail(FileDetail)
+        case pdfViewer(PDFViewer)
     }
     
     // MARK: - State
@@ -36,8 +35,12 @@ struct MainNavigation {
             MainTab()
         }
         
-        Reduce { _, action in
+        Reduce { state, action in
             switch action {
+            case let .mainTab(.delegate(.openPDF(file))):
+                state.path.append(.pdfViewer(PDFViewer.State(file: file)))
+                return .none
+                
             case .mainTab:
                 return .none
                 

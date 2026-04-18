@@ -25,15 +25,15 @@ struct Recents {
         var isSelectionMode = false
         var selectedFileIDs: Set<UUID> = []
         var groupedFiles: [FileGroup] = []
+        var listPresentation: FileListPresentation = .pending
     }
     
     // MARK: - Action
-    enum Action: BindableAction {
-        case binding(BindingAction<State>)
-        case onAppear
+    enum Action {
+        case task
         case reload
         case filesLoaded([FileItem])
-        case loadFailed
+        case loadFailed(String)
         case toggleViewMode
         case toggleSelectionMode
         case toggleFileSelection(UUID)
@@ -41,6 +41,11 @@ struct Recents {
         case fileTapped(FileItem)
         case fileMenuTapped(FileItem)
         case fabTapped
+        case delegate(Delegate)
+    }
+    
+    enum Delegate: Equatable {
+        case openPDF(FileItem)
     }
     
     // MARK: - Dependencies
@@ -55,24 +60,17 @@ struct Recents {
     
     // MARK: - Body
     var body: some Reducer<State, Action> {
-        BindingReducer()
-        
         Reduce { state, action in
             switch action {
-            case .binding:
-                return .none
-                
-            case .onAppear, .reload:
+            case .task, .reload:
+                state.listPresentation = .loading
                 return .run { [storage] send in
-                    do {
-                        let files = try storage.load()
-                        await send(.filesLoaded(files))
-                    } catch {
-                        await send(.loadFailed)
-                    }
+                    let files = try storage.load()
+                    await send(.filesLoaded(files))
+                } catch: { error, send in
+                    await send(.loadFailed(error.localizedDescription))
                 }
                 .cancellable(id: RecentsCancelID.load, cancelInFlight: true)
-                
             case let .filesLoaded(files):
                 let sorted = files.sorted { $0.createdAt > $1.createdAt }
                 state.groupedFiles = FileGroup.group(
@@ -80,9 +78,11 @@ struct Recents {
                     relativeTo: now,
                     calendar: calendar
                 )
+                state.listPresentation = .ready
                 return .none
                 
-            case .loadFailed:
+            case let .loadFailed(message):
+                state.listPresentation = .failed(message)
                 return .none
                 
             case .toggleViewMode:
@@ -104,10 +104,16 @@ struct Recents {
                 }
                 return .none
                 
+            case let .fileTapped(file):
+                if file.fileType == .pdf {
+                    return .send(.delegate(.openPDF(file)))
+                }
+                return .none
+                
             case .searchTapped,
-                    .fileTapped,
                     .fileMenuTapped,
-                    .fabTapped:
+                    .fabTapped,
+                    .delegate:
                 return .none
             }
         }

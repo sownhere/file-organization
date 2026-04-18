@@ -24,8 +24,6 @@ struct AppDelegate {
     }
     
     var body: some Reducer<State, Action> {
-        Reduce { _, _ in
-                .none
-        }
+        EmptyReducer()
     }
 }

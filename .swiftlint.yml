@@ -54,6 +54,16 @@ excluded:
     - "@build"
     - "**/@build"
     - swift-rules
+    - .claude
+    - .cursor
+    - .gemini
+    - .agent
+    - .agents
+    - .bmad
+    - .ios-skills
+    - .macos-skills
+    - .watchos-skills
+    - .tvos-skills
 
 file_length:
     warning: 500

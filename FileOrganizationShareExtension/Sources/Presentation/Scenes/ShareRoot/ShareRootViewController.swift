@@ -10,43 +10,66 @@ import Social
 import UniformTypeIdentifiers
 
 final class ShareRootViewController: SLComposeServiceViewController {
-    private let appGroupID = "group.com.santaris.fileorganization"
     private let inboxDirectoryName = "Inbox"
+    private var supportedProviders: [NSItemProvider] = []
+    private var unsupportedAttachmentCount = 0
+    private var previewFileNames: [String] = []
     
     override func isContentValid() -> Bool {
-        true
+        !supportedProviders.isEmpty
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureSharePreview()
     }
     
     override func didSelectPost() {
-        importAttachmentsToSharedInbox { [weak self] in
+        importAttachmentsToSharedInbox(providers: supportedProviders) { [weak self] in
             self?.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
         }
     }
+    
+    override func didSelectCancel() {
+        extensionContext?.cancelRequest(withError: NSError(
+            domain: "ShareRootViewController",
+            code: NSUserCancelledError,
+            userInfo: nil
+        ))
+    }
+    
 }
 
 private extension ShareRootViewController {
-    func importAttachmentsToSharedInbox(completion: @escaping () -> Void) {
+    func configureSharePreview() {
+        let allProviders = extensionItems()
+            .flatMap { $0.attachments ?? [] }
+        
+        supportedProviders = allProviders.filter(isSupportedAttachmentProvider(_:))
+        unsupportedAttachmentCount = max(0, allProviders.count - supportedProviders.count)
+        previewFileNames = supportedProviders.map(displayName(for:))
+        
+        if supportedProviders.isEmpty {
+            placeholder = "No compatible files found. Select files and try sharing again."
+            return
+        }
+        
+        placeholder = "\(importReadinessSummary()) • \(selectedFilesSummary())"
+    }
+    
+    func extensionItems() -> [NSExtensionItem] {
+        (extensionContext?.inputItems as? [NSExtensionItem]) ?? []
+    }
+    
+    func importAttachmentsToSharedInbox(providers: [NSItemProvider], completion: @escaping () -> Void) {
         guard
-            let extensionItems = extensionContext?.inputItems as? [NSExtensionItem],
-            !extensionItems.isEmpty,
+            !providers.isEmpty,
             let sharedInboxURL = sharedInboxDirectoryURL()
         else {
             completion()
             return
         }
-        
-        let providers = extensionItems
-            .flatMap { $0.attachments ?? [] }
-            .filter {
-                $0.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) ||
-                $0.hasItemConformingToTypeIdentifier(UTType.data.identifier)
-            }
-        
-        guard !providers.isEmpty else {
-            completion()
-            return
-        }
-        
+
         let dispatchGroup = DispatchGroup()
         
         for provider in providers {
@@ -64,7 +87,7 @@ private extension ShareRootViewController {
     func sharedInboxDirectoryURL() -> URL? {
         let fileManager = FileManager.default
         guard let containerURL = fileManager.containerURL(
-            forSecurityApplicationGroupIdentifier: appGroupID
+            forSecurityApplicationGroupIdentifier: ShareExtensionConfig.App.appGroupID
         ) else {
             return nil
         }
@@ -72,6 +95,28 @@ private extension ShareRootViewController {
         let inboxURL = containerURL.appendingPathComponent(inboxDirectoryName, isDirectory: true)
         try? fileManager.createDirectory(at: inboxURL, withIntermediateDirectories: true)
         return inboxURL
+    }
+    
+    func importReadinessSummary() -> String {
+        var parts = ["\(supportedProviders.count) supported"]
+        if unsupportedAttachmentCount > 0 {
+            parts.append("\(unsupportedAttachmentCount) unsupported")
+        }
+        return parts.joined(separator: ", ")
+    }
+    
+    func selectedFilesSummary() -> String {
+        guard !previewFileNames.isEmpty else {
+            return "No files"
+        }
+        
+        if previewFileNames.count <= 3 {
+            return previewFileNames.joined(separator: ", ")
+        }
+        
+        let leading = previewFileNames.prefix(2).joined(separator: ", ")
+        let remaining = previewFileNames.count - 2
+        return "\(leading), +\(remaining) more"
     }
     
     func loadAndPersist(provider: NSItemProvider, sharedInboxURL: URL, completion: @escaping () -> Void) {
@@ -86,13 +131,13 @@ private extension ShareRootViewController {
             guard let self else { return }
             
             if let url = item as? URL {
-                self.copySourceFile(from: url, to: sharedInboxURL)
+                copySourceFile(from: url, to: sharedInboxURL)
                 return
             }
             
             if let data = item as? Data {
                 let baseName = provider.suggestedName ?? UUID().uuidString
-                let ext = Self.preferredFileExtension(for: provider)
+                let ext = preferredFileExtension(for: provider)
                 let destination = self.uniqueDestinationURL(
                     in: sharedInboxURL,
                     preferredName: baseName,
@@ -160,9 +205,23 @@ private extension ShareRootViewController {
         return destination
     }
     
-    static func preferredFileExtension(for provider: NSItemProvider) -> String {
+    nonisolated func preferredFileExtension(for provider: NSItemProvider) -> String {
         provider.registeredTypeIdentifiers
             .compactMap { UTType($0)?.preferredFilenameExtension }
             .first ?? "dat"
+    }
+    
+    nonisolated func isSupportedAttachmentProvider(_ provider: NSItemProvider) -> Bool {
+        provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) ||
+        provider.hasItemConformingToTypeIdentifier(UTType.data.identifier)
+    }
+    
+    nonisolated func displayName(for provider: NSItemProvider) -> String {
+        let name = provider.suggestedName ?? "Untitled"
+        let ext = preferredFileExtension(for: provider)
+        if name.contains(".") || ext.isEmpty {
+            return name
+        }
+        return "\(name).\(ext)"
     }
 }

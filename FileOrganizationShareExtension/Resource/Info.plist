@@ -8,12 +8,17 @@
 	<string>$(API_VERSION)</string>
 	<key>APP_SHARE_EXTENSION_DISPLAY_NAME</key>
 	<string>$(APP_SHARE_EXTENSION_DISPLAY_NAME)</string>
+	<key>APP_GROUP_ID</key>
+	<string>$(APP_GROUP_ID)</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>NSExtensionActivationRule</key>
-			<string>TRUEPREDICATE</string>
+			<dict>
+				<key>NSExtensionActivationSupportsFileWithMaxCount</key>
+				<integer>20</integer>
+			</dict>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>

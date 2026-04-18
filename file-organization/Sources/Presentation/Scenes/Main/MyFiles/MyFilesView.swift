@@ -22,7 +22,7 @@ struct MyFilesView: View {
         content
             .navigationTitle("My Files")
             .navigationBarTitleDisplayMode(.large)
-            .onAppear { store.send(.onAppear) }
+            .task { store.send(.task) }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -34,7 +34,7 @@ struct MyFilesView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        Picker("Sort", selection: $store.sort) {
+                        Picker("Sort", selection: $store.sort.sending(\.sortChanged)) {
                             ForEach(MyFiles.Sort.allCases, id: \.self) { option in
                                 Text(option.displayName).tag(option)
                             }
@@ -50,6 +50,35 @@ struct MyFilesView: View {
 
 private extension MyFilesView {
     @ViewBuilder var content: some View {
+        switch store.listPresentation {
+        case .pending, .loading:
+            listLoadingPlaceholder
+        case let .failed(message):
+            listErrorPlaceholder(message: message)
+        case .ready:
+            listScrollContent
+        }
+    }
+    
+    var listLoadingPlaceholder: some View {
+        ZStack {
+            Color(.systemGroupedBackground)
+                .ignoresSafeArea(edges: .bottom)
+            ProgressView()
+        }
+    }
+    
+    func listErrorPlaceholder(message: String) -> some View {
+        ZStack {
+            Color(.systemGroupedBackground)
+                .ignoresSafeArea(edges: .bottom)
+            EmptyView()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .unableToLoadFiles(message: message)
+        }
+    }
+    
+    var listScrollContent: some View {
         ScrollView {
             if store.files.isEmpty {
                 emptyState

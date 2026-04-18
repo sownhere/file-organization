@@ -10,52 +10,55 @@
 import SwiftUI
 
 struct MainTabView: View {
-    // MARK: - Store
     @Bindable var store: StoreOf<MainTab>
-    
-    // MARK: - Body
+
     var body: some View {
-        content
+        tabView
     }
 }
 
 // MARK: - Content
+
 private extension MainTabView {
-    @ViewBuilder var content: some View {
+    var tabView: some View {
         TabView(selection: $store.selectedTab.sending(\.selectedTabChanged)) {
             RecentsView(store: store.scope(state: \.recents, action: \.recents))
                 .tabItem {
                     Label(
                         MainTabItem.recents.tabItemTitle,
                         systemImage: MainTabItem.recents.systemImageName
-                    ).symbolEffect(.bounce, value: store.selectedTab)
+                    )
+                    .symbolEffect(.bounce, value: store.selectedTab)
                 }
                 .tag(MainTabItem.recents)
-            
+
             MyFilesView(store: store.scope(state: \.myFiles, action: \.myFiles))
                 .tabItem {
                     Label(
                         MainTabItem.myFiles.tabItemTitle,
                         systemImage: MainTabItem.myFiles.systemImageName
-                    ).symbolEffect(.bounce, value: store.selectedTab)
+                    )
+                    .symbolEffect(.bounce, value: store.selectedTab)
                 }
                 .tag(MainTabItem.myFiles)
-            
+
             Text("Action")
                 .tabItem {
                     Label(
                         MainTabItem.action.tabItemTitle,
                         systemImage: MainTabItem.action.systemImageName
-                    ).symbolEffect(.bounce, value: store.selectedTab)
+                    )
+                    .symbolEffect(.bounce, value: store.selectedTab)
                 }
                 .tag(MainTabItem.action)
-            
+
             Text("Setting")
                 .tabItem {
                     Label(
                         MainTabItem.setting.tabItemTitle,
                         systemImage: MainTabItem.setting.systemImageName
-                    ).symbolEffect(.bounce, value: store.selectedTab)
+                    )
+                    .symbolEffect(.bounce, value: store.selectedTab)
                 }
                 .tag(MainTabItem.setting)
         }
