@@ -24,7 +24,7 @@ struct RecentsView: View {
         content
             .navigationTitle("Recents")
             .navigationBarTitleDisplayMode(.large)
-            .onAppear { store.send(.onAppear) }
+            .task { store.send(.task) }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -41,6 +41,35 @@ struct RecentsView: View {
 // MARK: - Content
 private extension RecentsView {
     @ViewBuilder var content: some View {
+        switch store.listPresentation {
+        case .pending, .loading:
+            listLoadingPlaceholder
+        case let .failed(message):
+            listErrorPlaceholder(message: message)
+        case .ready:
+            listScrollContent
+        }
+    }
+    
+    var listLoadingPlaceholder: some View {
+        ZStack {
+            Color(.systemGroupedBackground)
+                .ignoresSafeArea(edges: .bottom)
+            ProgressView()
+        }
+    }
+    
+    func listErrorPlaceholder(message: String) -> some View {
+        ZStack {
+            Color(.systemGroupedBackground)
+                .ignoresSafeArea(edges: .bottom)
+            EmptyView()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .unableToLoadRecents(message: message)
+        }
+    }
+    
+    var listScrollContent: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 6) {
                 toolbar
@@ -50,9 +79,8 @@ private extension RecentsView {
                     fileContent
                 }
             }
-            .padding(.bottom, 100)
+            .animation(.snappy, value: store.groupedFiles)
         }
-        .background(Color(.systemGroupedBackground))
     }
     
     @ViewBuilder var emptyState: some View {
@@ -83,6 +111,7 @@ private extension RecentsView {
                     Image(systemName: store.viewMode == .grid ? "list.bullet" : "square.grid.2x2")
                         .font(.system(size: 20))
                         .foregroundStyle(.primary)
+                        .animation(.spring, value: store.viewMode)
                 }
                 
                 Button {
@@ -91,6 +120,7 @@ private extension RecentsView {
                     Image(systemName: store.isSelectionMode ? "checkmark.square.fill" : "checkmark.square")
                         .font(.system(size: 20))
                         .foregroundStyle(store.isSelectionMode ? AppTheme.Colors.accent : .primary)
+                        .animation(.easeInOut, value: store.isSelectionMode)
                 }
             }
         }
@@ -100,7 +130,7 @@ private extension RecentsView {
     
     // MARK: - File Content
     @ViewBuilder var fileContent: some View {
-        LazyVStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 6) {
             ForEach(store.groupedFiles) { group in
                 dateHeader(group.title)
                 
@@ -112,6 +142,7 @@ private extension RecentsView {
                 }
             }
         }
+        .animation(.interactiveSpring, value: store.viewMode)
     }
     
     @ViewBuilder
@@ -174,7 +205,7 @@ private extension RecentsView {
     // MARK: - List View
     @ViewBuilder
     func fileList(files: [FileItem]) -> some View {
-        VStack(spacing: 10) {
+        LazyVStack(spacing: 10) {
             ForEach(files) { file in
                 fileListItem(file)
             }
@@ -212,12 +243,11 @@ private extension RecentsView {
                         .font(.system(size: 11))
                         .foregroundStyle(.secondary)
                 }
+                
+                Divider()
             }
             .padding(.horizontal, 12)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .overlay(alignment: .bottom) {
-                Divider()
-            }
             
             fileMenu(for: file)
         }

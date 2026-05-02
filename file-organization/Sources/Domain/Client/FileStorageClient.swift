@@ -17,7 +17,7 @@ nonisolated struct FileStorageClient: Sendable {
 
 extension FileStorageClient: DependencyKey {
     static let liveValue: FileStorageClient = {
-        let appGroupID = "group.com.santaris.fileorganization"
+        let appGroupID = AppConfig.App.appGroupID
         let inboxDirectoryName = "Inbox"
         let keys: [URLResourceKey] = [
             .creationDateKey,
@@ -60,7 +60,7 @@ extension FileStorageClient: DependencyKey {
                     return FileItem(
                         name: url.deletingPathExtension().lastPathComponent,
                         fileExtension: ext,
-                        category: FileCategory.from(fileExtension: ext),
+                        category: FileType.category(forFileExtension: ext),
                         size: size,
                         createdAt: created,
                         modifiedAt: modified,

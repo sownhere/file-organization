@@ -11,6 +11,7 @@ import Foundation
 enum ShareExtensionConfig {
     enum App {
         static let displayName = value(for: "APP_SHARE_EXTENSION_DISPLAY_NAME")
+        static let appGroupID = value(for: "APP_GROUP_ID")
     }
     
     enum API {

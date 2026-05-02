@@ -40,20 +40,6 @@ public enum FileCategory: String, Sendable, Equatable, Hashable, Codable, CaseIt
     }
     
     nonisolated public static func from(fileExtension: String) -> FileCategory {
-        switch fileExtension.lowercased() {
-        case "jpg", "jpeg", "png", "gif", "heic", "heif", "webp", "bmp":
-                .image
-        case "mp4", "mov", "m4v", "avi", "mkv":
-                .video
-        case "mp3", "wav", "m4a", "aac", "flac":
-                .audio
-        case "pdf", "doc", "docx", "txt", "md", "rtf",
-            "xls", "xlsx", "ppt", "pptx", "pages", "numbers", "key":
-                .document
-        case "zip", "rar", "7z", "tar", "gz":
-                .archive
-        default:
-                .other
-        }
+        FileType.category(forFileExtension: fileExtension)
     }
 }
